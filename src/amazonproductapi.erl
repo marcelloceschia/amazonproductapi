@@ -50,7 +50,7 @@ do_rest_call(RequestMethod, Operation, Params, Config) ->
         ++ ?REQUEST_URI ++ "\n"
         ++ StringedParams,
 
-    Signature = z_url:percent_encode(z_convert:to_list(base64:encode(hmac:hmac256(Config#amazonproductapi_config.secret, SignString)))),
+    Signature = z_url:percent_encode(z_convert:to_list(base64:encode(crypto:hmac(sha256, Config#amazonproductapi_config.secret, SignString)))),
 
     Url = ?PROTOCOL ++ "://" ++ Config#amazonproductapi_config.endpoint ++ ?REQUEST_URI ++ "?"
         ++ StringedParams ++ "&Signature=" ++ Signature,
