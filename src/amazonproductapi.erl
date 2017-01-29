@@ -69,8 +69,12 @@ map_request_method(get) -> "GET";
 map_request_method(post) -> "POST".
 
 interpret_body(_Headers, Body) ->
-    {XML, _} = xmerl_scan:string(Body),
+    {XML, _} = xmerl_scan:string(fix_unicode(Body)),
     XML.
+
+fix_unicode(XmlString) ->
+  Binary = unicode:characters_to_binary(XmlString, unicode),
+  binary_to_list(Binary).
 
 make_date() ->
     z_convert:to_list(z_dateformat:format(calendar:local_time(), "c", [])).
